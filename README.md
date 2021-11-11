@@ -36,7 +36,18 @@ Go to the directory of choice, eg.
 ```
 cd classification/resnet_50_v15
 ```
-Evaluate the model
+Evaluate the model with run.py script
+
+Optional arguments:
+
+  -h, --help            show this help message and exit
+  
+  -m MODEL_PATH, --model_path MODEL_PATH
+                        
+  -p {fp32,fp16,int8}, --precision {fp32,fp16,int8}
+                        
+  -b BATCH_SIZE, --batch_size BATCH_SIZE
+
 ```
 python run.py -m resnet_50_v15_tf_fp32.pb -p fp32
 python run.py -m resnet_50_v15_tflite_int8.tflite -p int8
