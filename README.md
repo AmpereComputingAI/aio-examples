@@ -19,13 +19,11 @@ ssh -N -L 8080:localhost:8080 -i <ssh key> your_user@xxx.xxx.xxx.xxx
 ```
 
 Use a browser to point to the URL printed out by the Jupyter notebook launcher. You will find 
-Jupyter Notebook examples, examples.ipynb, under classification and object_detection folders.
+Jupyter Notebook examples, examples.ipynb, under /classification and /object_detection folders.
 The examples run through several inference models, visualize results and present the performance
 numbers.
 
 ## Running Examples With CLI
-You can now access the aio-examples from the browser on your local device
-under /classification and /object_detection directories you will find examples.ipynb files
 To use CLI-level scripts:
 
 Use DLS_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
