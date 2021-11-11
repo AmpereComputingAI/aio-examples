@@ -1,6 +1,8 @@
 # aio-examples
 
-You can try AIO by either running jupyter notebook examples or python scripts on CLI level.
+You can try AIO by either running jupyter notebook examples or python scripts on CLI level. 
+
+**Note: Before running the examples, please run download_models.sh script to pull down all models.**
 
 ## Running Jupyter Notebook QuickStart Examples
 
