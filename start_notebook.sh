@@ -10,4 +10,4 @@ while [ $secs -gt 0 ]; do
    : $((secs--))
 done
 
-numactl --cpunodebind=0 --membind=0 jupyter notebook --no-browser --port=8080
+numactl --cpunodebind=0 --membind=0 jupyter notebook --no-browser --allow-root --port=8080
