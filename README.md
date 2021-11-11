@@ -16,7 +16,10 @@ If you run it on a cloud instance, make sure your machine has port 8080 open and
 ssh -N -L 8080:localhost:8080 -i <ssh key> your_user@xxx.xxx.xxx.xxx
 ```
 
-Use a browser to point to the URL printed out by the Jupyter notebook launcher
+Use a browser to point to the URL printed out by the Jupyter notebook launcher. You will find 
+Jupyter Notebook examples, examples.ipynb, under classification and object_detection folders.
+The examples run through several inference models, visualize results and present the performance
+numbers.
 
 ## Running Examples With CLI
 You can now access the aio-examples from the browser on your local device
