@@ -6,9 +6,9 @@ You can try AIO by either running jupyter notebook examples or python scripts on
 
 ## Running Jupyter Notebook QuickStart Examples
 
-Use DLS_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
+Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
-export DLS_NUM_THREADS=16
+export AIO_NUM_THREADS=16
 cd /aio-examples/
 bash start_notebook.sh
 ```
@@ -26,9 +26,9 @@ numbers.
 ## Running Examples With CLI
 To use CLI-level scripts:
 
-Use DLS_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
+Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
-export DLS_NUM_THREADS=16
+export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
