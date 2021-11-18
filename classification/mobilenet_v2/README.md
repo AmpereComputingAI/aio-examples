@@ -53,11 +53,11 @@ Throughput (batch size = 16):
 ### Running instructions
 
 Before running any code you should first export the PYTHONPATH variable with path pointing to the model zoo directory,
-as well as DLS_NUM_THREADS specifying the number of threads to be used.
+as well as AIO_NUM_THREADS specifying the number of threads to be used.
 
 ```
 export PYTHONPATH=/path/to/model_zoo
-export DLS_NUM_THREADS=1
+export AIO_NUM_THREADS=1
 ```
 
 For the best experience we also recommend setting environment variables as specified below.
