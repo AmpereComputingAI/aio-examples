@@ -6,9 +6,9 @@ You can try AIO by either running jupyter notebook examples or python scripts on
 
 ## Running Jupyter Notebook QuickStart Examples
 
-Use DLS_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
+Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
-export DLS_NUM_THREADS=16
+export AIO_NUM_THREADS=16
 cd /aio-examples/
 bash start_notebook.sh
 ```
@@ -26,15 +26,15 @@ numbers.
 ## Running Examples With CLI
 To use CLI-level scripts:
 
-Use DLS_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
+Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
-export DLS_NUM_THREADS=16
+export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
 Go to the directory of choice, eg.
 ```
-cd classification/resnet_50_v15
+cd classification/resnet_50_v1
 ```
 Evaluate the model with run.py script
 
@@ -42,13 +42,10 @@ Optional arguments:
 
   -h, --help            show this help message and exit
   
-  -m MODEL_PATH, --model_path MODEL_PATH
-                        
-  -p {fp32,fp16,int8}, --precision {fp32,fp16,int8}
+  -p {fp32}, --precision {fp32}
                         
   -b BATCH_SIZE, --batch_size BATCH_SIZE
 
 ```
-python run.py -m resnet_50_v15_tf_fp32.pb -p fp32
-python run.py -m resnet_50_v15_tflite_int8.tflite -p int8
+python run.py -p fp32
 ```

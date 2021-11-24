@@ -1,7 +1,6 @@
 import os
 import time
 import utils.misc as utils
-import utils.dataset as utils_ds
 from tqdm.auto import tqdm
 
 intra_op_parallelism_threads = None
@@ -36,22 +35,56 @@ def get_intra_op_parallelism_threads():
             omp_num_threads = None
 
         try:
-            dls_num_threads = int(os.environ["DLS_NUM_THREADS"])
+            aio_num_threads = int(os.environ["AIO_NUM_THREADS"])
             if omp_num_threads is not None:
-                if omp_num_threads != dls_num_threads:
+                if omp_num_threads != aio_num_threads:
                     utils.print_goodbye_message_and_die(
-                        f"DLS_NUM_THREADS={dls_num_threads} inconsistent with OMP_NUM_THREADS={omp_num_threads}!")
-            intra_op_parallelism_threads = dls_num_threads
+                        f"AIO_NUM_THREADS={aio_num_threads} inconsistent with OMP_NUM_THREADS={omp_num_threads}!")
+            intra_op_parallelism_threads = aio_num_threads
         except KeyError:
             pass
 
         if intra_op_parallelism_threads is None:
             utils.print_goodbye_message_and_die("Number of intra threads to use is not set!"
-                                                "\nUse DLS_NUM_THREADS or OMP_NUM_THREADS flags.")
+                                                "\nUse AIO_NUM_THREADS or OMP_NUM_THREADS flags.")
 
-        print(f"\nRunning with {intra_op_parallelism_threads} threads\n")
+        print(f"\nIntraop parallelism set to {intra_op_parallelism_threads} threads\n")
 
     return intra_op_parallelism_threads
+
+
+def benchmark_func(func, num_of_runs, timeout, warm_up=True):
+    """
+    A function for benchmarking functions compliant to model_zoo approach in other parts of the code.
+
+    :param func: python function to be benchmarked
+    :param num_of_runs: int, number of func invocations to be done
+    :param timeout: float, time expressed in seconds after which benchmarking should be stopped
+    :param warm_up: bool, whether to do a single warm-up run excluded from measurements
+
+    :return: latency in seconds
+    """
+    def benchmark(function):
+        start = time.time()
+        function()
+        return time.time() - start
+
+    if warm_up:
+        _ = benchmark(func)
+
+    total_time = 0.
+    if num_of_runs is None:
+        i = 0
+        benchmarking_start = time.time()
+        while time.time() - benchmarking_start < timeout:
+            total_time += benchmark(func)
+            i += 1
+    else:
+        i = num_of_runs
+        for _ in tqdm(range(num_of_runs)):
+            total_time += benchmark(func)
+
+    return total_time / i
 
 
 def run_model(single_pass_func, runner, dataset, batch_size, num_of_runs, timeout):
@@ -74,9 +107,11 @@ def run_model(single_pass_func, runner, dataset, batch_size, num_of_runs, timeou
     :return: dict containing accuracy metrics and dict containing perf metrics
     """
     if num_of_runs is not None:
-        if dataset.available_instances < num_of_runs * batch_size:
+        requested_instances_num = num_of_runs * batch_size
+        if dataset.available_instances < requested_instances_num:
             utils.print_goodbye_message_and_die(
-                f"Number of runs requested exceeds number of instances available in dataset!")
+                f"Number of runs requested exceeds number of instances available in dataset! "
+                f"(Requested: {requested_instances_num}, Available: {dataset.available_instances})")
 
     try:
         if num_of_runs is None:
@@ -87,7 +122,7 @@ def run_model(single_pass_func, runner, dataset, batch_size, num_of_runs, timeou
         else:
             for _ in tqdm(range(num_of_runs)):
                 single_pass_func(runner, dataset)
-    except utils_ds.OutOfInstances:
+    except utils.OutOfInstances:
         pass
 
     return dataset.summarize_accuracy(), runner.print_performance_metrics(batch_size)
