@@ -49,7 +49,7 @@ class PyTorchRunner:
         output_tensor = output_tensor.detach().numpy()
 
         self.__total_inference_time += finish - start
-        if self.__times_invoked == 0:
+        if self.__times_invoked < 2:
             self.__warm_up_run_latency += finish - start
         self.__times_invoked += 1
 
