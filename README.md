@@ -28,7 +28,6 @@ To use CLI-level scripts:
 
 Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
-export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
@@ -47,5 +46,5 @@ Optional arguments:
   -b BATCH_SIZE, --batch_size BATCH_SIZE
 
 ```
-python run.py -p fp32
+AIO_NUM_THREADS=16 numactl --physcpubind=0-15 python run.py -p fp32
 ```
