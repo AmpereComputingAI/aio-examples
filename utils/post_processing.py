@@ -72,8 +72,8 @@ def get_imagenet_names(ids_array):
     if type(ids_list) is list:
         string_with_names = ""
         for id in ids_list:
-            string_with_names += imagenet_labels[id] + ", "
+            string_with_names += "[" + imagenet_labels[id] + "], "
         string_with_names = string_with_names[:-2]
     else:
-        string_with_names = imagenet_labels[ids_list]
+        string_with_names = "[" + imagenet_labels[ids_list] + "]"
     return string_with_names
