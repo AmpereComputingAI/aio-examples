@@ -1,3 +1,4 @@
+import os
 import torch
 import utils.misc as utils
 import time
@@ -11,14 +12,13 @@ class PyTorchRunner:
     A class providing facilities to run PyTorch model (as pretrained torchvision model).
     """
 
-    def __init__(self, model, classification_model=False):
+    def __init__(self, model, jit_freeze=True):
         torch.set_num_threads(bench_utils.get_intra_op_parallelism_threads())
-        self.__classification_model = classification_model
-
         self.__model = model
         self.__model.eval()
-        self.__model_script = torch.jit.script(self.__model)
-        self.__frozen_script = torch.jit.freeze(self.__model_script)
+        self.__frozen_script = None
+        if jit_freeze:
+            self.__frozen_script = torch.jit.freeze(torch.jit.script(self.__model))
 
         self.__warm_up_run_latency = 0.0
         self.__total_inference_time = 0.0
@@ -32,30 +32,35 @@ class PyTorchRunner:
         and finally returning the output.
         :return: dict, output dictionary with tensor names and corresponding output
         """
-        with torch.no_grad():
-            if self.__classification_model:
+
+        def runner_func(model):
+            if type(input) == tuple:
                 start = time.time()
-                output_tensor = self.__frozen_script(input)
+                output = model(*input)
                 finish = time.time()
             else:
-                if type(input) == tuple:
-                    start = time.time()
-                    output_tensor = self.__model(*input)
-                    finish = time.time()
-                else:
-                    start = time.time()
-                    output_tensor = self.__model(input)
-                    finish = time.time()
-        output_tensor = output_tensor.detach().numpy()
+                start = time.time()
+                output = model(input)
+                finish = time.time()
 
-        self.__total_inference_time += finish - start
-        if self.__times_invoked < 2:
-            self.__warm_up_run_latency += finish - start
-        self.__times_invoked += 1
+            self.__total_inference_time += finish - start
+            if self.__times_invoked == 0:
+                self.__warm_up_run_latency += finish - start
+            self.__times_invoked += 1
+
+            return output
+
+        with torch.no_grad():
+            if self.__frozen_script is not None:
+                output_tensor = runner_func(self.__frozen_script)
+            else:
+                output_tensor = runner_func(self.__model)
 
         return output_tensor
 
     def print_performance_metrics(self, batch_size):
         perf = bench_utils.print_performance_metrics(
             self.__warm_up_run_latency, self.__total_inference_time, self.__times_invoked, batch_size)
+        if os.getenv("AIO_PROFILER", "0") == "1":
+            torch.AIO.print_profile_data()
         return perf
