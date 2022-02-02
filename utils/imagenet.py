@@ -84,7 +84,7 @@ class ImageNet(utils_ds.ImageDataset):
         :return: numpy array containing rescaled, pre-processed image data of batch size requested at class
         initialization
         """
-        input_array = np.empty([self.__batch_size, *target_shape, 3])  # NHWC order
+        input_array = np.empty([self.__batch_size, 3, *target_shape])  # NCHW order
         for i in range(self.__batch_size):
             self.path_to_latest_image = self.__get_path_to_img()
             input_array[i], _ = self._ImageDataset__load_image(
@@ -92,6 +92,7 @@ class ImageNet(utils_ds.ImageDataset):
             )
         if self.__pre_processing:
             input_array = pp.pre_process(input_array, self.__pre_processing, self.__color_model)
+
         return input_array
 
     def extract_top1(self, output_array):
