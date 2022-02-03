@@ -11,7 +11,7 @@ class ImageNet(utils_ds.ImageDataset):
     """
 
     def __init__(self, batch_size: int, color_model: str,
-                 images_path=None, labels_path=None, pre_processing=None, is1001classes=False):
+                 images_path=None, labels_path=None, pre_processing=None, is1001classes=False, convert_to_fp16=False):
 
         if images_path is None:
             env_var = "IMAGENET_IMG_PATH"
@@ -32,6 +32,7 @@ class ImageNet(utils_ds.ImageDataset):
         self.available_instances = len(self.__file_names)
         self.__top_1_count = 0
         self.__top_5_count = 0
+        self.__convert_to_fp16 = convert_to_fp16
         self.path_to_latest_image = None
         super().__init__()
 

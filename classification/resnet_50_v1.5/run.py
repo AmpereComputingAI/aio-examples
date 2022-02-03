@@ -63,7 +63,7 @@ def run_onnx_fp16(model_path, batch_size, num_of_runs, timeout, images_path, lab
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
-                       pre_processing="VGG", is1001classes=True)
+                       pre_processing="VGG", is1001classes=True, convert_to_fp16=True)
     runner = OnnxRunner(model_path, ["softmax_tensor:0"])
 
     return run_model(run_single_pass, runner, dataset, batch_size, num_of_runs, timeout)
