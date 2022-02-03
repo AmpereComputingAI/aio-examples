@@ -1,15 +1,12 @@
 # densenet_169
-rm -Rf classification/densenet_169/densenet_169_op11
 wget -c https://www.dropbox.com/s/6gja02x160xvpg0/densenet_169_op11.tar.gz -O - | tar -xz
-mv densenet_169_op11 classification/densenet_169
+cp densenet_169_op11/densenet_169_op11.onnx classification/densenet_169
+rm -Rf densenet_169_op11
 
-# resnet_50_v2
-rm -Rf classification/resnet_50_v2/resnet50v2
-wget -c https://s3.amazonaws.com/onnx-model-zoo/resnet/resnet50v2/resnet50v2.tar.gz -O - | tar -xz
-mv resnet50v2 classification/resnet_50_v2
+# resnet_50_v1.5 fp32
+wget -c https://zenodo.org/record/2592612/files/resnet50_v1.onnx
+mv resnet50_v1.onnx classification/resnet_50_v1.5
 
-# vgg_16
-rm -Rf classification/vgg_16/vgg16
-wget -c https://s3.amazonaws.com/onnx-model-zoo/vgg/vgg16/vgg16.tar.gz -O - | tar -xz
-mv vgg16 classification/vgg_16
-rm .*vgg*
+# resnet_50_v1.5 fp16
+wget -c https://www.dropbox.com/s/r80ndhbht7tixn5/resnet_50_v1.5_fp16.onnx
+mv resnet_50_v1.5_fp16.onnx classification/resnet_50_v1.5

@@ -33,18 +33,18 @@ def run_onnx_fp32(model_path, batch_size, num_of_runs, timeout, images_path, lab
 
     def run_single_pass(onnx_runner, imagenet):
         shape = (224, 224)
-        onnx_runner.set_input_tensor("data", imagenet.get_input_array(shape))
+        onnx_runner.set_input_tensor("input_tensor:0", imagenet.get_input_array(shape))
         output = onnx_runner.run()
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
-                imagenet.extract_top1(output["resnetv24_dense0_fwd"][i]),
-                imagenet.extract_top5(output["resnetv24_dense0_fwd"][i])
+                imagenet.extract_top1(output["softmax_tensor:0"][i]),
+                imagenet.extract_top5(output["softmax_tensor:0"][i])
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
                        pre_processing="VGG", is1001classes=True)
-    runner = OnnxRunner(model_path, ["resnetv24_dense0_fwd"])
+    runner = OnnxRunner(model_path, ["softmax_tensor:0"])
 
     return run_model(run_single_pass, runner, dataset, batch_size, num_of_runs, timeout)
 
@@ -53,18 +53,18 @@ def run_onnx_fp16(model_path, batch_size, num_of_runs, timeout, images_path, lab
 
     def run_single_pass(onnx_runner, imagenet):
         shape = (224, 224)
-        onnx_runner.set_input_tensor("data", imagenet.get_input_array(shape))
+        onnx_runner.set_input_tensor("input_tensor:0", imagenet.get_input_array(shape))
         output = onnx_runner.run()
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
-                imagenet.extract_top1(output["resnetv24_dense0_fwd"][i]),
-                imagenet.extract_top5(output["resnetv24_dense0_fwd"][i])
+                imagenet.extract_top1(output["softmax_tensor:0"][i]),
+                imagenet.extract_top5(output["softmax_tensor:0"][i])
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
                        pre_processing="VGG", is1001classes=True)
-    runner = OnnxRunner(model_path, ["resnetv24_dense0_fwd"])
+    runner = OnnxRunner(model_path, ["softmax_tensor:0"])
 
     return run_model(run_single_pass, runner, dataset, batch_size, num_of_runs, timeout)
 
