@@ -38,8 +38,8 @@ def run_onnx_fp32(model_path, batch_size, num_of_runs, timeout, images_path, lab
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
-                imagenet.extract_top1(output["softmax_tensor:0"][i]),
-                imagenet.extract_top5(output["softmax_tensor:0"][i])
+                imagenet.extract_top1(output[i]),
+                imagenet.extract_top5(output[i])
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
@@ -58,8 +58,8 @@ def run_onnx_fp16(model_path, batch_size, num_of_runs, timeout, images_path, lab
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
-                imagenet.extract_top1(output["softmax_tensor:0"][i]),
-                imagenet.extract_top5(output["softmax_tensor:0"][i])
+                imagenet.extract_top1(output[i]),
+                imagenet.extract_top5(output[i])
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,

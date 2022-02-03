@@ -36,6 +36,7 @@ class OnnxRunner:
         :param input_name: str, name of a input node in a model, eg. "image_tensor:0"
         :param input_array: numpy array with intended input
         """
+        self.__feed_dict = dict()
         self.__feed_dict[input_name] = input_array
 
     def run(self):
@@ -51,7 +52,7 @@ class OnnxRunner:
         if self.__times_invoked == 0:
             self.__warm_up_run_latency += finish - start
         self.__times_invoked += 1
-        return output
+        return output[0]
 
     def print_performance_metrics(self, batch_size):
         perf = bench_utils.print_performance_metrics(

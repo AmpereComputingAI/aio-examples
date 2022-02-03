@@ -93,7 +93,6 @@ class ImageNet(utils_ds.ImageDataset):
         if self.__pre_processing:
             input_array = pp.pre_process(input_array, self.__pre_processing, self.__color_model)
 
-
         # Tranpose NHWC to NCHW
         input_array = np.transpose(input_array, [0, 3, 1, 2])
         return input_array
