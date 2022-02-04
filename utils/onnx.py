@@ -5,11 +5,7 @@ import time
 import utils.benchmark as bench_utils
 import numpy as np
 import sys
-
-try:
-    import onnxruntime as ort
-except ImportError:
-    pass
+import onnxruntime as ort
 
 class OnnxRunner:
     """

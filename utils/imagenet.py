@@ -95,7 +95,11 @@ class ImageNet(utils_ds.ImageDataset):
             input_array = pp.pre_process(input_array, self.__pre_processing, self.__color_model)
 
         # Tranpose NHWC to NCHW
-        input_array = np.transpose(input_array, [0, 3, 1, 2])
+        if self.__convert_to_fp16:
+          # fp16 model has builtin transpose from NHWC to NCHW, so do not need to transpose data in pre-processing
+          input_array = input_array.astype('float16')
+        else:
+          input_array = np.transpose(input_array, [0, 3, 1, 2])
         return input_array
 
     def extract_top1(self, output_array):
