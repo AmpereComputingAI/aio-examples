@@ -11,7 +11,7 @@ class ImageNet(utils_ds.ImageDataset):
     """
 
     def __init__(self, batch_size: int, color_model: str,
-                 images_path=None, labels_path=None, pre_processing=None, is1001classes=False, convert_to_fp16=False):
+                 images_path=None, labels_path=None, pre_processing=None, is1001classes=False, convert_to_fp16=False, transpose_input=True):
 
         if images_path is None:
             env_var = "IMAGENET_IMG_PATH"
@@ -33,6 +33,7 @@ class ImageNet(utils_ds.ImageDataset):
         self.__top_1_count = 0
         self.__top_5_count = 0
         self.__convert_to_fp16 = convert_to_fp16
+        self.__transpose_input = transpose_input
         self.path_to_latest_image = None
         super().__init__()
 
@@ -98,7 +99,7 @@ class ImageNet(utils_ds.ImageDataset):
         if self.__convert_to_fp16:
           # fp16 model has builtin transpose from NHWC to NCHW, so do not need to transpose data in pre-processing
           input_array = input_array.astype('float16')
-        else:
+        elif self.__transpose_input:
           input_array = np.transpose(input_array, [0, 3, 1, 2])
         return input_array
 

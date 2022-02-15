@@ -35,47 +35,25 @@ def run_onnx_fp32(model_path, batch_size, num_of_runs, timeout, images_path, lab
         shape = (224, 224)
         onnx_runner.set_input_tensor("input:0", imagenet.get_input_array(shape))
         output = onnx_runner.run()
+        print("Output shape: {}".format(output.shape))
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
-                imagenet.extract_top1(output["densenet169/predictions/Reshape_1:0"][i]),
-                imagenet.extract_top5(output["densenet169/predictions/Reshape_1:0"][i])
+                imagenet.extract_top1(output[i][0][0]),
+                imagenet.extract_top5(output[i][0][0])
             )
 
     dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
-                       pre_processing="Inception", is1001classes=True)
+                       pre_processing="Inception", is1001classes=False, convert_to_fp16=False, transpose_input=False)
     runner = OnnxRunner(model_path, ["densenet169/predictions/Reshape_1:0"])
 
     return run_model(run_single_pass, runner, dataset, batch_size, num_of_runs, timeout)
 
-
-def run_onnx_fp16(model_path, batch_size, num_of_runs, timeout, images_path, labels_path):
-
-    def run_single_pass(onnx_runner, imagenet):
-        shape = (224, 224)
-        onnx_runner.set_input_tensor("input:0", imagenet.get_input_array(shape))
-        output = onnx_runner.run()
-        for i in range(batch_size):
-            imagenet.submit_predictions(
-                i,
-                imagenet.extract_top1(output["densenet169/predictions/Reshape_1:0"][i]),
-                imagenet.extract_top5(output["densenet169/predictions/Reshape_1:0"][i])
-            )
-
-    dataset = ImageNet(batch_size, "RGB", images_path, labels_path,
-                       pre_processing="Inception", is1001classes=True)
-    runner = OnnxRunner(model_path, ["densenet169/predictions/Reshape_1:0"])
-
-    return run_model(run_single_pass, runner, dataset, batch_size, num_of_runs, timeout)
 
 def main():
     args = parse_args()
     if args.precision == "fp32":
         run_onnx_fp32(
-            args.model_path, args.batch_size, args.num_runs, args.timeout, args.images_path, args.labels_path
-        )
-    elif args.precision == "fp16":
-        run_onnx_fp16(
             args.model_path, args.batch_size, args.num_runs, args.timeout, args.images_path, args.labels_path
         )
     else:

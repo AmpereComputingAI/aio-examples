@@ -35,6 +35,7 @@ def run_onnx(model_path, batch_size, num_of_runs, timeout, images_path, labels_p
         shape = (224, 224)
         onnx_runner.set_input_tensor("input_tensor:0", imagenet.get_input_array(shape))
         output = onnx_runner.run()
+        print("Output shape: {}".format(output.shape))
         for i in range(batch_size):
             imagenet.submit_predictions(
                 i,
