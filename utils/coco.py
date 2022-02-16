@@ -15,7 +15,7 @@ class COCODataset(utils_ds.ImageDataset):
 
     def __init__(self,
                  batch_size: int, color_model: str, images_filename_base: str,
-                 images_path=None, annotations_path=None, pre_processing=None, sort_ascending=False):
+                 images_path=None, annotations_path=None, pre_processing=None, sort_ascending=False, transpose_input=True):
         """
         A function initializing the class.
 
@@ -55,6 +55,7 @@ class COCODataset(utils_ds.ImageDataset):
             self.__image_ids = sorted(self.__image_ids)
         self.available_instances = len(self.__image_ids)
         self.path_to_latest_image = None
+        self.__transpose_input = transpose_input
         super().__init__()
 
     def __get_path_to_img(self):
@@ -106,6 +107,10 @@ class COCODataset(utils_ds.ImageDataset):
             input_array[i] = self.__load_image_and_store_ratios(target_shape)
         if self.__pre_processing:
             input_array = pp.pre_process(input_array, self.__pre_processing, self.__color_model)
+        if self.__transpose_input:
+            input_array = np.transpose(input_array, [0, 3, 1, 2])
+
+        input_array = input_array.astype('uint8')
         return input_array
 
     def convert_bbox_to_coco_order(self, bbox, left=0, top=1, right=2, bottom=3, absolute=True):

@@ -10,3 +10,7 @@ mv resnet50_v1.onnx classification/resnet_50_v1.5/resnet_50_v1.5_fp32.onnx
 # resnet_50_v1.5 fp16
 wget -c https://www.dropbox.com/s/r80ndhbht7tixn5/resnet_50_v1.5_fp16.onnx
 mv resnet_50_v1.5_fp16.onnx classification/resnet_50_v1.5
+
+# ssd_mobilenet_v1
+wget -c https://www.dropbox.com/s/om86cdc7qqlclh1/torch2onnx_ssd_mobilenet_v1.onnx
+mv torch2onnx_ssd_mobilenet_v1.onnx object_detection/ssd_mobilenet_v1

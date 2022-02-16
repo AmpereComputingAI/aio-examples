@@ -17,7 +17,6 @@ class OnnxRunner:
         session_options.intra_op_num_threads = bench_utils.get_intra_op_parallelism_threads()
         session_options.inter_op_num_threads = 1
         session_options.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
-
         self.__sess = ort.InferenceSession(model, sess_options=session_options, providers=['AIOExecutionProvider', 'CPUExecutionProvider'])
         self.__warm_up_run_latency = 0.0
         self.__total_inference_time = 0.0
@@ -48,7 +47,7 @@ class OnnxRunner:
         if self.__times_invoked == 0:
             self.__warm_up_run_latency += finish - start
         self.__times_invoked += 1
-        return output[0]
+        return output
 
     def print_performance_metrics(self, batch_size):
         perf = bench_utils.print_performance_metrics(
