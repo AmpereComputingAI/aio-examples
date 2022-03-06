@@ -10,4 +10,5 @@ while [ $secs -gt 0 ]; do
    : $((secs--))
 done
 
+export AIO_NUM_THREADS=$(grep -c processor /proc/cpuinfo)
 numactl --cpunodebind=0 --membind=0 jupyter notebook --no-browser --allow-root --port=8080
