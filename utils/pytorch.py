@@ -44,7 +44,8 @@ class PyTorchRunner:
                 finish = time.time()
 
             self.__total_inference_time += finish - start
-            if self.__times_invoked == 0:
+            # The time of the first two passes should be ignored. AIO pytorch use first two for initialization
+            if self.__times_invoked < 2:
                 self.__warm_up_run_latency += finish - start
             self.__times_invoked += 1
 
