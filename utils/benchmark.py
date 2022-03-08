@@ -145,7 +145,7 @@ def print_performance_metrics(
         utils.print_warning_message("Printing performance data based just on a (warm-up) run!")
         latency_in_seconds = warm_up_run_latency
     else:
-        latency_in_seconds = (total_inference_time - warm_up_run_latency) / (number_of_runs - 1)
+        latency_in_seconds = (total_inference_time - warm_up_run_latency) / (number_of_runs - 2)
 
     latency_in_ms = latency_in_seconds * 1000
     instances_per_second = batch_size / latency_in_seconds
