@@ -13,6 +13,12 @@ cd /aio-examples/
 bash start_notebook.sh
 ```
 
+if you would like to run examples using with CLI you can run the start_notebook.sh in the background like so:
+
+```
+bash start_notebook.sh &
+```
+
 If you run it on a cloud instance, make sure your machine has port 8080 open and on your local device run:
 ```
 ssh -N -L 8080:localhost:8080 -i <ssh key> your_user@xxx.xxx.xxx.xxx
@@ -32,7 +38,12 @@ export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
-Go to the directory of choice, eg.
+Download the models:
+```
+bash download_models.sh
+```
+
+Go to the directory of choice, e.g.
 ```
 cd classification/resnet_50_v15
 ```
