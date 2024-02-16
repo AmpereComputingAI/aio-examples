@@ -55,5 +55,5 @@ Optional arguments:
   -b BATCH_SIZE, --batch_size BATCH_SIZE
 
 ```
-AIO_NUM_THREADS=16 numactl --physcpubind=0-15 python run.py -p fp32
+python run.py -p fp32
 ```
