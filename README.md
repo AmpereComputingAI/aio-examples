@@ -28,10 +28,11 @@ To use CLI-level scripts:
 
 Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will run on
 ```
+export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
-Go to the directory of choice, eg.
+Go to the directory of choice, e.g.
 ```
 cd classification/resnet_50_v1
 ```
@@ -46,5 +47,5 @@ Optional arguments:
   -b BATCH_SIZE, --batch_size BATCH_SIZE
 
 ```
-AIO_NUM_THREADS=16 numactl --physcpubind=0-15 python run.py -p fp32
+python run.py -p fp32
 ```
