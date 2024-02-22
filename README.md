@@ -10,6 +10,7 @@ Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will 
 ```
 export AIO_NUM_THREADS=16
 cd /aio-examples/
+bash download_models.sh
 bash start_notebook.sh
 ```
 
