@@ -1,11 +1,14 @@
 import os
-import torch
-import utils.misc as utils
+# import sys
 import time
-import utils.benchmark as bench_utils
-import numpy as np
-import sys
+
+# import torch
+# import numpy as np
 import onnxruntime as ort
+
+# import utils.misc as utils
+import utils.benchmark as bench_utils
+
 
 class OnnxRunner:
     """
