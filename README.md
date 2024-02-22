@@ -10,7 +10,14 @@ Use AIO_NUM_THREADS to specify the number of cores the AIO compute kernels will 
 ```
 export AIO_NUM_THREADS=16
 cd /aio-examples/
+bash download_models.sh
 bash start_notebook.sh
+```
+
+if you would like to run examples using with CLI you can run the start_notebook.sh in the background like so:
+
+```
+bash start_notebook.sh &
 ```
 
 If you run it on a cloud instance, make sure your machine has port 8080 open and on your local device run:
@@ -32,7 +39,12 @@ export AIO_NUM_THREADS=16
 cd /aio-examples/
 ```
 
-Go to the directory of choice, eg.
+Download the models:
+```
+bash download_models.sh
+```
+
+Go to the directory of choice, e.g.
 ```
 cd classification/resnet_50_v15
 ```
