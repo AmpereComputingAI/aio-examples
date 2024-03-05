@@ -1,3 +1,5 @@
+set -eo pipefail
+
 # densenet_169
 wget -c https://ampereaimodelzoo.s3.amazonaws.com/densenet_169_op11.tar.gz -O - | tar -xz
 cp densenet_169_op11/densenet_169_op11.onnx classification/densenet_169
