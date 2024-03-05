@@ -1,3 +1,5 @@
+set -eo pipefail
+
 # densenet_169
 wget -O classification/densenet_169/densenet_169_tf_fp32.pb https://ampereaimodelzoo.s3.amazonaws.com/densenet_169_tf_fp32.pb
 wget -O classification/densenet_169/densenet_169_tf_fp16.pb https://ampereaimodelzoo.s3.amazonaws.com/densenet_169_tf_fp16.pb
